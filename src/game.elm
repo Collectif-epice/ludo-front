@@ -1,22 +1,26 @@
 import Html exposing (text, Html, div)
-import Collage exposing (collage)
 
 {-- custom modules imports --}
 import Logic exposing(..)
 import Api exposing(..)
+import Ludographics exposing(..)
 
 main =
   Html.beginnerProgram {model = model, update = update, view = view}
 
 {-- model --}
+{-- A list of states to execute ? The server will send a stream of events --}
 model : Model
 model = 0
+
+{-- type RealModel = { players = [] , events = [] } --}
 
 {-- view --}
 view : Model -> Html Event
 view model =
     div []
-        [ text (toString model) ]
+        [ text (toString model),
+          generateBoard ]
 
 {-- update --}
 {--
@@ -29,6 +33,8 @@ view model =
     Win          : Won the game
     Lose         : Lose the game
 
+    type Player = String Int
+    use Union types for Events ..
 --}
 type Event = Move1 | Back1 | Eaten {-- | DiceThrow | HasSix | MadeFullTurn | Win | Lose --}
 
