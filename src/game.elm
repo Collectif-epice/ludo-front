@@ -1,28 +1,29 @@
-import Html exposing (text, Html, div)
+import Html exposing (text, Html, div, button)
+import Html.Events exposing (onClick)
 
-{-- custom modules imports --}
-import Logic exposing(..)
+-- custom modules imports --
 import Api exposing(..)
-import Ludographics exposing(..)
+import LudoGraphics exposing(..)
+import Data exposing(..)
 
 main =
   Html.beginnerProgram {model = model, update = update, view = view}
 
-{-- model --}
-{-- A list of states to execute ? The server will send a stream of events --}
-model : Model
-model = 0
+-- model --
+type alias Model =  {board : Board, data : Int }
+model = { board = board  , data = 0}
 
-{-- type RealModel = { players = [] , events = [] } --}
 
-{-- view --}
+-- view --
 view : Model -> Html Event
 view model =
     div []
-        [ text (toString model),
+        [ button [onClick Move1] [text "Move 1"],
+          button [onClick Back1] [text "Back 1"],
+          button [onClick Eaten] [text "Eaten"],
           generateBoard ]
 
-{-- update --}
+-- update --
 {--
     Move1        : Move 1 square further
     Back1        : Move 1 square back
@@ -39,7 +40,6 @@ view model =
 type Event = Move1 | Back1 | Eaten {-- | DiceThrow | HasSix | MadeFullTurn | Win | Lose --}
 
 update :  Event -> Model -> Model
-
 update event model =
     case event of
         Move1 ->
@@ -49,6 +49,17 @@ update event model =
         Eaten ->
             eaten model
 
+move1: Model -> Model
+move1 model =
+    {model | data = model.data + 1}
+
+back1: Model -> Model
+back1 model =
+    {model | data = model.data - 1}
+
+eaten: Model -> Model
+eaten model =
+    {model | data = 0}
 
 
 
